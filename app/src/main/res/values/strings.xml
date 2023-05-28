@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GalleryApp</string>
+    <string name="pick_images">Выбор фотографий</string>
+    <string name="ready">Готово</string>
+    <string name="picked_images">Выбранные фотографии</string>
+
+</resources>
