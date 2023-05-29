@@ -1,4 +1,4 @@
-package com.simbadev.galleryapp
+package com.simbadev.galleryapp.madel
 
 class Image {
     var imagePath: String? = null

@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center|top"
     android:padding="10dp"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.mainActvity.MainActivity">
 
     <TextView
         android:id="@+id/tv"
@@ -25,7 +24,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/galleryRecyclerView"
+        android:id="@+id/rv_gallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -40,19 +39,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
+            android:id="@+id/tv_num_of_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
             android:layout_marginStart="14dp"
-            android:id="@+id/tv_num_of_selected"
             android:text="Выбрано 2 фотографии"
             android:textSize="16sp"
             android:textStyle="bold" />

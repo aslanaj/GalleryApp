@@ -1,4 +1,4 @@
-package com.simbadev.galleryapp
+package com.simbadev.galleryapp.ui.selectedActivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,10 +18,8 @@ class SelectedActivity : AppCompatActivity() {
         val imageName = intent.getStringExtra("name")
 
          supportActionBar?.setTitle(imageName)
-
+/*
         Glide.with(this).load(imagePath)
-            .into(binding.imageView)
-
-
+            .into(binding.rvSelected)*/
     }
 }

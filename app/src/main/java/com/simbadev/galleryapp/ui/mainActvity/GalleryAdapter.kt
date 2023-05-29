@@ -1,4 +1,4 @@
-package com.simbadev.galleryapp
+package com.simbadev.galleryapp.ui.mainActvity
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.simbadev.galleryapp.R
+import com.simbadev.galleryapp.madel.Image
+import com.simbadev.galleryapp.ui.selectedActivity.SelectedActivity
 
 
 class GalleryAdapter(

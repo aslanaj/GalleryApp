@@ -1,4 +1,4 @@
-package com.simbadev.galleryapp
+package com.simbadev.galleryapp.ui.mainActvity
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import com.simbadev.galleryapp.madel.Image
 import com.simbadev.galleryapp.databinding.ActivityMainBinding
 import java.lang.Exception
 
@@ -27,8 +28,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.galleryRecyclerView.layoutManager = GridLayoutManager(this, 3)
-        binding.galleryRecyclerView.setHasFixedSize(true)
+        binding.rvGallery.layoutManager = GridLayoutManager(this, 3)
+        binding.rvGallery.setHasFixedSize(true)
 
         initRegister()
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         allPictures = ArrayList()
         if (allPictures!!.isEmpty()) {
             allPictures = getAllImages()
-            binding.galleryRecyclerView?.adapter = GalleryAdapter(this, allPictures!!)
+            binding.rvGallery?.adapter = GalleryAdapter(this, allPictures!!)
         }
     }
 
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         ) { isGranted: Boolean ->
             if (isGranted) {
                 allPictures = getAllImages()
-                binding.galleryRecyclerView?.adapter = GalleryAdapter(this, allPictures!!)
+                binding.rvGallery?.adapter = GalleryAdapter(this, allPictures!!)
 
                 Log.e("ololo", "onCreate: ", )
             } else {
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             Log.e("ololo", "onCreate: ", )
         } else {
             allPictures = getAllImages()
-            binding.galleryRecyclerView?.adapter = GalleryAdapter(this, allPictures!!)
+            binding.rvGallery?.adapter = GalleryAdapter(this, allPictures!!)
         }
     }
 
