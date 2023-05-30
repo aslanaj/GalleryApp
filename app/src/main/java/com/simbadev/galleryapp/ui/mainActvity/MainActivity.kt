@@ -1,109 +1,243 @@
 package com.simbadev.galleryapp.ui.mainActvity
 
-import android.Manifest
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+
+import android.R
+import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.simbadev.galleryapp.madel.Image
 import com.simbadev.galleryapp.databinding.ActivityMainBinding
-import java.lang.Exception
+import com.simbadev.galleryapp.model.Image
+import com.simbadev.galleryapp.ui.selectedActivity.SelectedActivity
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var allPictures: ArrayList<Image>? = null
-
-    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-
+    private lateinit var adapter: GalleryAdapter
+    private val imageLists = arrayListOf<Image>()
+    private val selectedPictures = mutableListOf<Image>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        binding.rvGallery.layoutManager = GridLayoutManager(this, 3)
-        binding.rvGallery.setHasFixedSize(true)
-
-        initRegister()
-
-
-        requestPermission()
-
-        allPictures = ArrayList()
-        if (allPictures!!.isEmpty()) {
-            allPictures = getAllImages()
-            binding.rvGallery?.adapter = GalleryAdapter(this, allPictures!!)
+        loadImages()
+        adapter = GalleryAdapter(imageLists, this::addImage, this::removeImage, this::btnVisible)
+        binding.apply {
+            rvGallery.layoutManager = GridLayoutManager(this@MainActivity, 3)
+            rvGallery.adapter = adapter
         }
+        initClickListener()
+
     }
 
-    private fun initRegister() {
-        requestPermissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                allPictures = getAllImages()
-                binding.rvGallery?.adapter = GalleryAdapter(this, allPictures!!)
-
-                Log.e("ololo", "onCreate: ", )
-            } else {
-                Toast.makeText(this, "Разрешение не получено", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-
-
-    private fun requestPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this@MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-            Log.e("ololo", "onCreate: ", )
+    private fun btnVisible(image: Image) {
+        if (!image.isSelected) {
+            binding.btnSelected.visibility = View.GONE
         } else {
-            allPictures = getAllImages()
-            binding.rvGallery?.adapter = GalleryAdapter(this, allPictures!!)
+            binding.btnSelected.visibility = View.VISIBLE
+        }
+    }
+
+    private fun initClickListener() {
+        binding.btnShowSelected.setOnClickListener {
+            val bundle = Bundle().apply {
+                putSerializable(KEY, ArrayList(selectedPictures))
+            }
+            val intent = Intent(applicationContext, SelectedActivity::class.java)
+            intent.putExtras(bundle)
+            imageLists.clear()
+            selectedPictures.clear()
+            startActivity(intent)
         }
     }
 
 
-    private fun getAllImages(): ArrayList<Image>? {
-        val images = ArrayList<Image>()
-        val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-
-        val projection =
-            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
-
-        var cursor =
-            this@MainActivity.contentResolver
-                .query(
-                    allImageUri, projection,
-                    null,
-                    null,
-                    null
-                )
-        try {
-            cursor!!.moveToFirst()
-            do {
-                val image = Image()
-                image.imagePath =
-                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-                image.imageName =
-                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
-                images.add(image)
-            } while (cursor.moveToNext())
-            cursor.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return images
+    private fun removeImage(image: Image) {
+        selectedPictures.add(image)
     }
 
+    private fun addImage(image: Image) {
+        selectedPictures.add(image)
+    }
+
+    private fun loadImages() {
+        imageLists.add(
+            Image(
+                "https://animecorner.me/wp-content/uploads/2022/10/naruto.png",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://overclockers.ru/st/legacy/blog/422417/370374_O.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://i.ytimg.com/vi/UGj4GMAGPAc/maxresdefault.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.hindustantimes.com/ht-img/img/2023/04/22/550x309/HIDIVE_OSHI_NO_KO_1682155135941_1682155148326.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://m.media-amazon.com/images/I/31iH1SJizUL._AC_UF1000,1000_QL80_.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://static.kinoafisha.info/upload/news/443819087407.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://img.asmedia.epimg.net/resizer/gy-ADnQWtaBop3GYhMfX7qW5Xbk=/644x362/cloudfront-eu-central-1.images.arcpublishing.com/diarioas/O3FUPP4PEZI7PFP6WCUQX5HFTM.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.hindustantimes.com/ht-img/img/2023/04/22/550x309/HIDIVE_OSHI_NO_KO_1682155135941_1682155148326.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://m.media-amazon.com/images/I/31iH1SJizUL._AC_UF1000,1000_QL80_.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.shutterstock.com/image-photo/japanese-girl-anime-warriorjapanese-deaushka-260nw-2026469507.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://i.ytimg.com/vi/UGj4GMAGPAc/maxresdefault.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://static.kinoafisha.info/upload/news/443819087407.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.hindustantimes.com/ht-img/img/2023/04/22/550x309/HIDIVE_OSHI_NO_KO_1682155135941_1682155148326.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://m.media-amazon.com/images/I/31iH1SJizUL._AC_UF1000,1000_QL80_.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.hindustantimes.com/ht-img/img/2023/04/22/550x309/HIDIVE_OSHI_NO_KO_1682155135941_1682155148326.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://m.media-amazon.com/images/I/31iH1SJizUL._AC_UF1000,1000_QL80_.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.shutterstock.com/image-photo/japanese-girl-anime-warriorjapanese-deaushka-260nw-2026469507.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://i.ytimg.com/vi/UGj4GMAGPAc/maxresdefault.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://static.kinoafisha.info/upload/news/443819087407.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.hindustantimes.com/ht-img/img/2023/04/22/550x309/HIDIVE_OSHI_NO_KO_1682155135941_1682155148326.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://m.media-amazon.com/images/I/31iH1SJizUL._AC_UF1000,1000_QL80_.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.hindustantimes.com/ht-img/img/2023/04/22/550x309/HIDIVE_OSHI_NO_KO_1682155135941_1682155148326.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://m.media-amazon.com/images/I/31iH1SJizUL._AC_UF1000,1000_QL80_.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.shutterstock.com/image-photo/japanese-girl-anime-warriorjapanese-deaushka-260nw-2026469507.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://i.ytimg.com/vi/UGj4GMAGPAc/maxresdefault.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://static.kinoafisha.info/upload/news/443819087407.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://www.hindustantimes.com/ht-img/img/2023/04/22/550x309/HIDIVE_OSHI_NO_KO_1682155135941_1682155148326.jpg",
+                false
+            )
+        )
+        imageLists.add(
+            Image(
+                "https://m.media-amazon.com/images/I/31iH1SJizUL._AC_UF1000,1000_QL80_.jpg",
+                false
+            )
+        )
+
+
+    }
+
+
+    companion object {
+        const val KEY = "key"
+    }
 }

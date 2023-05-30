@@ -11,21 +11,19 @@
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
-
-
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="115dp"
-            android:layout_height="115dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher" />
+             />
 
     <FrameLayout
-        android:layout_width="115dp"
-        android:layout_height="115dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:id="@+id/selectionOverlay"
         android:visibility="gone">
         <View
-            android:id="@+id/selectionOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_img_selected"
